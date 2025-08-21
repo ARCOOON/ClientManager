@@ -1,4 +1,4 @@
-# Endpoint Manager (Rewritten)
+# Client Manager
 
 This project provides a simple, cross‑platform endpoint management system
 implemented without third‑party frameworks such as FastAPI or pydantic.  It
@@ -12,7 +12,7 @@ impossible.
 ## Project Structure
 
 ```
-endpoint_manager_rebuild/
+ClientManager/
 ├── README.md              # this file
 ├── server/                # management server package
 │   ├── main.py            # WSGI server entrypoint
@@ -38,7 +38,7 @@ run the module:
 ```bash
 pip install Jinja2
 
-cd endpoint_manager_rebuild
+cd ClientManager
 python -m server.main
 ```
 
@@ -61,7 +61,7 @@ stores its configuration in a TOML file; a sample config is provided in
 To run the client:
 
 ```bash
-cd endpoint_manager_rebuild
+cd ClientManager
 python -m client.service.main --config client/config.sample.toml
 ```
 
