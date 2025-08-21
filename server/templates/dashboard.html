@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
+<div class="row row-cols-2 row-cols-md-3 g-3">
+  <div class="col">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Computers</h5>
+        <p class="fs-4 fw-bold mb-0">{{ summary.computers }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Packages</h5>
+        <p class="fs-4 fw-bold mb-0">{{ summary.packages }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Assignments</h5>
+        <p class="fs-4 fw-bold mb-0">{{ summary.assignments }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Jobs</h5>
+        <p class="fs-4 fw-bold mb-0">{{ summary.jobs }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Succeeded Jobs</h5>
+        <p class="fs-4 fw-bold mb-0">{{ summary.succeeded_jobs }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Failed Jobs</h5>
+        <p class="fs-4 fw-bold mb-0">{{ summary.failed_jobs }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

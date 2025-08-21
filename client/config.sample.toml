@@ -1,0 +1,5 @@
+server_url = "http://localhost:8000"
+client_id = 1
+token = "b25aa4174a61cfd5988da96d4d4ffad5"
+poll_interval = 600
+tags = []

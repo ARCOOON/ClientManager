@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-4">
+  <!-- Left: computer list & add form -->
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Computers</h5>
+        <form method="post" action="/computers" class="row row-cols-1 row-cols-md-auto g-2 align-items-center mt-2 mb-3">
+          <div class="col">
+            <input type="text" name="hostname" class="form-control form-control-sm" placeholder="Hostname" required />
+          </div>
+          <div class="col">
+            <input type="text" name="os" class="form-control form-control-sm" placeholder="OS" />
+          </div>
+          <div class="col">
+            <input type="text" name="arch" class="form-control form-control-sm" placeholder="Arch" />
+          </div>
+          <div class="col">
+            <input type="text" name="tags" class="form-control form-control-sm" placeholder="Tags (comma)" />
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-sm btn-dark">Add</button>
+          </div>
+        </form>
+        <div class="list-group overflow-auto" style="max-height:65vh;">
+          {% for c in computers %}
+          <a
+            hx-get="/computers/{{ c.id }}"
+            hx-target="#computer-detail"
+            hx-swap="innerHTML"
+            class="list-group-item list-group-item-action"
+          >
+            <div class="fw-medium">{{ c.hostname }}</div>
+            <div class="small text-secondary">
+              {{ c.os or '-' }} • {{ c.arch or '-' }}{% if c.last_check_in %} • last seen: {{ c.last_check_in }}{% endif %}
+            </div>
+          </a>
+          {% else %}
+          <div class="text-center text-muted small p-2">No computers enrolled</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: detail panel -->
+  <div class="col-12 col-lg-8" id="computer-detail">
+    <div class="card shadow-sm">
+      <div class="card-body text-center text-secondary">
+        Select a machine on the left to view its details.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

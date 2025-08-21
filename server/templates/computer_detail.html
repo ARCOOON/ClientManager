@@ -1,0 +1,112 @@
+{% set comp = computer %}
+<div class="vstack gap-3">
+  <!-- Header -->
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-start">
+      <div>
+        <h5 class="card-title mb-1">{{ comp.hostname }}</h5>
+        <div class="small text-secondary">{{ comp.os or '-' }} • {{ comp.arch or '-' }} • client {{ comp.client_version or 'n/a' }}</div>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('editForm').classList.toggle('d-none')">Edit</button>
+    </div>
+    <!-- Inline edit form -->
+    <div class="card-body d-none" id="editForm">
+      <form method="post" action="/computers/{{ comp.id }}/update" hx-post="/computers/{{ comp.id }}/update" hx-target="#computer-detail" hx-swap="innerHTML" class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label form-label-sm">Hostname</label>
+          <input type="text" name="hostname" value="{{ comp.hostname }}" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label form-label-sm">Tags (comma)</label>
+          <input type="text" name="tags" value="{{ (comp.tags | default([])) | join(',') }}" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-sm btn-dark w-100">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row gy-2 small">
+        <div class="col-6 col-md-3">
+          <div class="text-secondary">OS</div>
+          <div class="fw-medium">{{ comp.os or '-' }}</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="text-secondary">Arch</div>
+          <div class="fw-medium">{{ comp.arch or '-' }}</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="text-secondary">Last check‑in</div>
+          <div class="fw-medium">{{ comp.last_check_in or '—' }}</div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="text-secondary">Token</div>
+          <div class="font-monospace small text-break">{{ comp.token or '—' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Packages + actions -->
+  <div class="card">
+    <form method="post" action="/computers/{{ comp.id }}/apply" hx-post="/computers/{{ comp.id }}/apply" hx-target="#computer-detail" hx-swap="innerHTML">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="fw-semibold">Packages</div>
+        <div class="d-flex gap-2">
+          <select name="platform" class="form-select form-select-sm">
+            <option value="">All platforms</option>
+            <option value="win">Windows</option>
+            <option value="linux">Linux</option>
+          </select>
+          <input type="search" name="q" placeholder="Search packages…" class="form-control form-control-sm" />
+        </div>
+      </div>
+      <div class="table-responsive" style="max-height:55vh; overflow:auto;">
+        <table class="table table-sm align-middle">
+          <thead class="table-light position-sticky top-0">
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Platform</th>
+              <th>Desired</th>
+              <th>Installed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in packages %}
+            <tr>
+              <td>
+                <div class="fw-medium">{{ p.name }}</div>
+                <div class="small text-secondary">{{ p.id }}</div>
+              </td>
+              <td>{{ p.version }}</td>
+              <td>{{ p.platform }}</td>
+              <td style="min-width:130px;">
+                <select name="pkg_{{ p.id }}" class="form-select form-select-sm">
+                  <option value="hold" {{ 'selected' if p.desired_state == 'hold' else '' }}>Hold</option>
+                  <option value="install" {{ 'selected' if p.desired_state == 'install' else '' }}>Install</option>
+                  <option value="uninstall" {{ 'selected' if p.desired_state == 'uninstall' else '' }}>Uninstall</option>
+                </select>
+              </td>
+              <td>
+                {% if p.installed_version %}
+                  <span class="text-success fw-semibold">{{ p.installed_version }}</span>
+                {% else %}
+                  <span class="text-secondary">—</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-dark">Apply</button>
+      </div>
+    </form>
+  </div>
+</div>

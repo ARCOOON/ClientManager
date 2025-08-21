@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-4">Jobs</h1>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Computer</th>
+          <th>Package</th>
+          <th>Action</th>
+          <th>Status</th>
+          <th>Attempts</th>
+          <th>Started</th>
+          <th>Finished</th>
+          <th>RC</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for j in jobs %}
+        <tr>
+          <td>{{ j.id }}</td>
+          <td>{{ j.hostname or j.computer_id }}</td>
+          <td>{{ j.package_name or j.package_id }}</td>
+          <td>{{ j.action }}</td>
+          <td>{{ j.status }}</td>
+          <td>{{ j.attempts }}</td>
+          <td>{{ j.started_at or '—' }}</td>
+          <td>{{ j.finished_at or '—' }}</td>
+          <td>{{ j.rc if j.rc is not none else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9" class="text-center text-muted">No jobs queued</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
